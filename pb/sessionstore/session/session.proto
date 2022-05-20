@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package sessionstore.session;
+option go_package = "github.com/powerpuffpenguin/sessionstore/sessionstore/session";
+
+
+message Token {
+    // 訪問 token
+    // token 編碼規則爲爲 
+    // var playdata=RawUrlBase64(id)+'.'+RawUrlBase64(platform)+'.'+RawUrlBase64(random_uuid)
+    // var access=playdata + '.' + sign(playdata)
+    string access = 1;
+    // 刷新 token
+    string refresh = 2;
+    // 訪問 token 過期時間 unix
+    int64 accessDeadline = 3;
+    // 刷新 token 過期時間 unix
+    int64 refreshDeadline = 4;
+    // 會話最長維持時間 unix 如果爲 0 不限制
+    int64 deadline = 5;
+}
+
+message Raw{
+    Token token = 1;
+    bytes data = 2;
+}
