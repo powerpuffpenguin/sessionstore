@@ -70,3 +70,8 @@ func WithDeadline(deadline time.Duration) Option {
 		o.deadline = deadline
 	})
 }
+func WithStore(store Store) Option {
+	return newFuncOption(func(o *options) {
+		o.store = store
+	})
+}

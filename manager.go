@@ -11,12 +11,13 @@ import (
 	protoc_session "github.com/powerpuffpenguin/sessionstore/sessionstore/session"
 
 	"github.com/powerpuffpenguin/sessionstore/cryptoer"
+	"github.com/powerpuffpenguin/sessionstore/store"
 	"google.golang.org/protobuf/proto"
 )
 
 type Manager struct {
 	coder Coder
-	opts  options
+	opts  *options
 }
 
 func New(coder Coder, opt ...Option) (m *Manager) {
@@ -27,9 +28,12 @@ func New(coder Coder, opt ...Option) (m *Manager) {
 	if opts.refresh < opts.access {
 		opts.refresh = opts.access
 	}
+	if opts.store == nil {
+		opts.store = store.NewMemory(10000)
+	}
 	return &Manager{
 		coder: coder,
-		opts:  opts,
+		opts:  &opts,
 	}
 }
 func (m *Manager) Close() error {
@@ -78,6 +82,9 @@ func (m *Manager) GetRaw(ctx context.Context, access string) (key string, token 
 
 	b, e = m.opts.store.Get(ctx, key)
 	if e != nil {
+		return
+	} else if b == nil {
+		e = cryptoer.ErrNotExistsToken
 		return
 	}
 	var raw protoc_session.Raw
@@ -136,7 +143,7 @@ func (m *Manager) Delete(ctx context.Context, access string) (e error) {
 		return
 	}
 	key := playdata[:i]
-	e = m.opts.store.Del(context.Background(), key, access)
+	e = m.opts.store.Del(context.Background(), key)
 	return
 }
 
@@ -231,7 +238,6 @@ func (m *Manager) Refresh(ctx context.Context, access, refresh string) (token *T
 		e = cryptoer.ErrCannotRefresh
 		return
 	}
-
 	access, e = m.NewToken(key)
 	if e != nil {
 		return
@@ -259,6 +265,7 @@ func (m *Manager) Refresh(ctx context.Context, access, refresh string) (token *T
 			Refresh:         token.Refresh,
 			AccessDeadline:  token.AccessDeadline,
 			RefreshDeadline: token.RefreshDeadline,
+			Deadline:        token.Deadline,
 		},
 		Data: b,
 	}

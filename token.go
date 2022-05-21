@@ -1,6 +1,8 @@
 package sessionstore
 
-import "time"
+import (
+	"time"
+)
 
 type Token struct {
 	Access          string
@@ -12,7 +14,7 @@ type Token struct {
 
 func NewToken(access, refresh string,
 	accessDeadline, refreshDeadline int64,
-	 deadline int64) *Token {
+	deadline int64) *Token {
 	return &Token{
 		Access:          access,
 		Refresh:         refresh,
@@ -32,5 +34,5 @@ func (t *Token) CanRefresh() bool {
 	if t.Deadline == 0 {
 		return true
 	}
-	return time.Now().After(time.Unix(t.Deadline, 0))
+	return time.Now().Unix() <= t.Deadline
 }
