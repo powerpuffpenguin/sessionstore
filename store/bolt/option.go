@@ -5,7 +5,7 @@ import (
 )
 
 var defaultOptions = options{
-	url:   `bolt://0600/bbolt.db?Timeout=1s`,
+	url:   `bolt://0600/bolt.db?Timeout=1s`,
 	limit: 1000 * 1000 * 10,
 }
 

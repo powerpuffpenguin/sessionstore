@@ -11,9 +11,9 @@ import (
 	"github.com/boltdb/bolt"
 )
 
-// bbolt://mode/path?k0=v0&k1=v1
-// bbolt://0600/bbolt.db?Timeout=1s
-// bbolt://0600//bbolt.db?Timeout=1s
+// bolt://mode/path?k0=v0&k1=v1
+// bolt://0600/bbolt.db?Timeout=1s
+// bolt://0600//bbolt.db?Timeout=1s
 func ParseURL(rawURL string) (path string, mode fs.FileMode, options *bolt.Options, e error) {
 	u, e := url.Parse(rawURL)
 	if e != nil {
@@ -32,12 +32,8 @@ func ParseURL(rawURL string) (path string, mode fs.FileMode, options *bolt.Optio
 
 	query := u.Query()
 	options = &bolt.Options{
-		NoGrowSync:     isTrue(query.Get(`NoGrowSync`)),
-		NoFreelistSync: isTrue(query.Get(`NoFreelistSync`)),
-		FreelistType:   bolt.FreelistType(query.Get(`FreelistType`)),
-		ReadOnly:       isTrue(query.Get(`ReadOnly`)),
-		NoSync:         isTrue(query.Get(`NoSync`)),
-		Mlock:          isTrue(query.Get(`Mlock`)),
+		NoGrowSync: isTrue(query.Get(`NoGrowSync`)),
+		ReadOnly:   isTrue(query.Get(`ReadOnly`)),
 	}
 	s := query.Get(`Timeout`)
 	if s != `` {
@@ -56,13 +52,6 @@ func ParseURL(rawURL string) (path string, mode fs.FileMode, options *bolt.Optio
 	s = query.Get(`InitialMmapSize`)
 	if s != `` && s != `0` {
 		options.InitialMmapSize, e = strconv.Atoi(s)
-		if e != nil {
-			return
-		}
-	}
-	s = query.Get(`PageSize`)
-	if s != `` && s != `0` {
-		options.PageSize, e = strconv.Atoi(s)
 		if e != nil {
 			return
 		}
