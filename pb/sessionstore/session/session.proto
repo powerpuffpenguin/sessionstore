@@ -24,3 +24,15 @@ message Raw{
     Token token = 1;
     bytes data = 2;
 }
+
+
+message BBoltData {
+    bytes id = 1;
+    bytes data = 2;
+    int64 deadline = 3;
+}
+message BBoltSort {
+    bytes id = 1;
+    bytes key = 2;
+    int64 deadline = 3;
+}

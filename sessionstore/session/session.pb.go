@@ -162,6 +162,132 @@ func (x *Raw) GetData() []byte {
 	return nil
 }
 
+type BBoltData struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id       []byte `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Data     []byte `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	Deadline int64  `protobuf:"varint,3,opt,name=deadline,proto3" json:"deadline,omitempty"`
+}
+
+func (x *BBoltData) Reset() {
+	*x = BBoltData{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_sessionstore_session_session_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BBoltData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BBoltData) ProtoMessage() {}
+
+func (x *BBoltData) ProtoReflect() protoreflect.Message {
+	mi := &file_sessionstore_session_session_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BBoltData.ProtoReflect.Descriptor instead.
+func (*BBoltData) Descriptor() ([]byte, []int) {
+	return file_sessionstore_session_session_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *BBoltData) GetId() []byte {
+	if x != nil {
+		return x.Id
+	}
+	return nil
+}
+
+func (x *BBoltData) GetData() []byte {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *BBoltData) GetDeadline() int64 {
+	if x != nil {
+		return x.Deadline
+	}
+	return 0
+}
+
+type BBoltSort struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id       []byte `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Key      []byte `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
+	Deadline int64  `protobuf:"varint,3,opt,name=deadline,proto3" json:"deadline,omitempty"`
+}
+
+func (x *BBoltSort) Reset() {
+	*x = BBoltSort{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_sessionstore_session_session_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BBoltSort) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BBoltSort) ProtoMessage() {}
+
+func (x *BBoltSort) ProtoReflect() protoreflect.Message {
+	mi := &file_sessionstore_session_session_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BBoltSort.ProtoReflect.Descriptor instead.
+func (*BBoltSort) Descriptor() ([]byte, []int) {
+	return file_sessionstore_session_session_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *BBoltSort) GetId() []byte {
+	if x != nil {
+		return x.Id
+	}
+	return nil
+}
+
+func (x *BBoltSort) GetKey() []byte {
+	if x != nil {
+		return x.Key
+	}
+	return nil
+}
+
+func (x *BBoltSort) GetDeadline() int64 {
+	if x != nil {
+		return x.Deadline
+	}
+	return 0
+}
+
 var File_sessionstore_session_session_proto protoreflect.FileDescriptor
 
 var file_sessionstore_session_session_proto_rawDesc = []byte{
@@ -184,11 +310,21 @@ var file_sessionstore_session_session_proto_rawDesc = []byte{
 	0x73, 0x69, 0x6f, 0x6e, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x2e, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f,
 	0x6e, 0x2e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x12,
 	0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x64, 0x61,
-	0x74, 0x61, 0x42, 0x3f, 0x5a, 0x3d, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
-	0x2f, 0x70, 0x6f, 0x77, 0x65, 0x72, 0x70, 0x75, 0x66, 0x66, 0x70, 0x65, 0x6e, 0x67, 0x75, 0x69,
-	0x6e, 0x2f, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x2f, 0x73,
-	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x2f, 0x73, 0x65, 0x73, 0x73,
-	0x69, 0x6f, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x61, 0x22, 0x4b, 0x0a, 0x09, 0x42, 0x42, 0x6f, 0x6c, 0x74, 0x44, 0x61, 0x74, 0x61, 0x12,
+	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x02, 0x69, 0x64, 0x12,
+	0x12, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x64,
+	0x61, 0x74, 0x61, 0x12, 0x1a, 0x0a, 0x08, 0x64, 0x65, 0x61, 0x64, 0x6c, 0x69, 0x6e, 0x65, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x08, 0x64, 0x65, 0x61, 0x64, 0x6c, 0x69, 0x6e, 0x65, 0x22,
+	0x49, 0x0a, 0x09, 0x42, 0x42, 0x6f, 0x6c, 0x74, 0x53, 0x6f, 0x72, 0x74, 0x12, 0x0e, 0x0a, 0x02,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x02, 0x69, 0x64, 0x12, 0x10, 0x0a, 0x03,
+	0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x1a,
+	0x0a, 0x08, 0x64, 0x65, 0x61, 0x64, 0x6c, 0x69, 0x6e, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03,
+	0x52, 0x08, 0x64, 0x65, 0x61, 0x64, 0x6c, 0x69, 0x6e, 0x65, 0x42, 0x3f, 0x5a, 0x3d, 0x67, 0x69,
+	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x70, 0x6f, 0x77, 0x65, 0x72, 0x70, 0x75,
+	0x66, 0x66, 0x70, 0x65, 0x6e, 0x67, 0x75, 0x69, 0x6e, 0x2f, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f,
+	0x6e, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x2f, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x74,
+	0x6f, 0x72, 0x65, 0x2f, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -203,10 +339,12 @@ func file_sessionstore_session_session_proto_rawDescGZIP() []byte {
 	return file_sessionstore_session_session_proto_rawDescData
 }
 
-var file_sessionstore_session_session_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_sessionstore_session_session_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_sessionstore_session_session_proto_goTypes = []interface{}{
-	(*Token)(nil), // 0: sessionstore.session.Token
-	(*Raw)(nil),   // 1: sessionstore.session.Raw
+	(*Token)(nil),     // 0: sessionstore.session.Token
+	(*Raw)(nil),       // 1: sessionstore.session.Raw
+	(*BBoltData)(nil), // 2: sessionstore.session.BBoltData
+	(*BBoltSort)(nil), // 3: sessionstore.session.BBoltSort
 }
 var file_sessionstore_session_session_proto_depIdxs = []int32{
 	0, // 0: sessionstore.session.Raw.token:type_name -> sessionstore.session.Token
@@ -247,6 +385,30 @@ func file_sessionstore_session_session_proto_init() {
 				return nil
 			}
 		}
+		file_sessionstore_session_session_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BBoltData); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_sessionstore_session_session_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BBoltSort); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -254,7 +416,7 @@ func file_sessionstore_session_session_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_sessionstore_session_session_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

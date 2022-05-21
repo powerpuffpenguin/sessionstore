@@ -10,6 +10,7 @@ import (
 	"github.com/powerpuffpenguin/sessionstore"
 	"github.com/powerpuffpenguin/sessionstore/cryptoer"
 	"github.com/powerpuffpenguin/sessionstore/store"
+	"github.com/powerpuffpenguin/sessionstore/store/bbolt"
 )
 
 type Session struct {
@@ -33,12 +34,13 @@ func (Coder) Marshal(session interface{}) (b []byte, e error) {
 	b, e = json.Marshal(session)
 	return
 }
-func TestManager(t *testing.T) {
+func testManager(t *testing.T, store sessionstore.Store) {
 	m := sessionstore.New(Coder{},
-		sessionstore.WithStore(store.NewMemory(3)),
+		sessionstore.WithStore(store),
 		sessionstore.WithAccess(time.Second*1),
 		sessionstore.WithRefresh(time.Second*3),
 	)
+
 	ctx := context.Background()
 	platform := `test`
 	tokens := make([]*sessionstore.Token, 0, 3)
@@ -107,16 +109,39 @@ func TestManager(t *testing.T) {
 		}
 	}
 }
-func TestManagerRefresh(t *testing.T) {
+func TestManager(t *testing.T) {
+	testManager(t, store.NewMemory(3))
+}
+func testManagerRefresh(t *testing.T, store sessionstore.Store) {
+	opts := []sessionstore.Option{
+		sessionstore.WithStore(store),
+	}
+	w0 := time.Second * 2
+	w1 := time.Second * 2
+	w2 := time.Second
+	if _, ok := store.(*bbolt.Store); ok {
+		opts = append(opts,
+			sessionstore.WithAccess(time.Second*1),
+			sessionstore.WithRefresh(time.Second*5),
+			sessionstore.WithDeadline(time.Second*10),
+		)
+		w0 = time.Second * 3
+		w1 = time.Second * 3
+		w2 = time.Second * 4
+	} else {
+		opts = append(opts,
+			sessionstore.WithAccess(time.Second*1),
+			sessionstore.WithRefresh(time.Second*3),
+			sessionstore.WithDeadline(time.Second*4),
+		)
+	}
 	m := sessionstore.New(Coder{},
-		sessionstore.WithStore(store.NewMemory(3)),
-		sessionstore.WithAccess(time.Second*1),
-		sessionstore.WithRefresh(time.Second*3),
-		sessionstore.WithDeadline(time.Second*4),
+		opts...,
 	)
 	ctx := context.Background()
 	platform := `test`
 	tokens := make([]*sessionstore.Token, 0, 3)
+	last := time.Now()
 	for i := 0; i < 4; i++ {
 		s := &Session{
 			ID:   fmt.Sprint(i),
@@ -164,9 +189,10 @@ func TestManagerRefresh(t *testing.T) {
 			t.Fatal(`Name not equal`)
 		}
 	}
+	fmt.Println(`set get `, time.Since(last))
 
-	time.Sleep(time.Second * 2)
-
+	time.Sleep(w0)
+	last = time.Now()
 	for i, token := range tokens {
 		_, _, e := m.Get(ctx, token.Access)
 		if e != cryptoer.ErrExpired {
@@ -205,7 +231,10 @@ func TestManagerRefresh(t *testing.T) {
 
 		tokens[i] = t0
 	}
-	time.Sleep(time.Second * 2)
+	fmt.Println(`refresh `, time.Since(last))
+	time.Sleep(w1)
+
+	last = time.Now()
 	for i, token := range tokens {
 		_, _, e := m.Get(ctx, token.Access)
 		if e != cryptoer.ErrExpired {
@@ -228,11 +257,16 @@ func TestManagerRefresh(t *testing.T) {
 
 		tokens[i] = t0
 	}
-	time.Sleep(time.Second * 1)
+	fmt.Println(`refresh2 `, time.Since(last))
+
+	time.Sleep(w2)
 	for _, token := range tokens {
 		_, _, e := m.Refresh(ctx, token.Access, token.Refresh)
 		if e == nil {
 			t.Fatal(`Refresh success on deadline`)
 		}
 	}
+}
+func TestMemoryRefresh(t *testing.T) {
+	testManagerRefresh(t, store.NewMemory(3))
 }
