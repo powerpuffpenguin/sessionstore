@@ -27,7 +27,7 @@ func newFuncOption(f func(*options)) *funcOption {
 		f: f,
 	}
 }
-func WithRead(read Redis) Option {
+func WithRead(read Backend) Option {
 	return newFuncOption(func(o *options) {
 		o.read = read
 	})
